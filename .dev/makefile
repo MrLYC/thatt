@@ -2,12 +2,12 @@ DEVPATH ?= $(PWD)
 VIRTUALENV ?= $(DEVPATH)/thatt-venv
 VENVPATH := $(VIRTUALENV)/bin
 
-# virtual env
-DEVPYTHON := $(PYENV) $(VENVPATH)/python
-DEVPEP8 := $(PYENV) $(VENVPATH)/pep8 --repeat --ignore=E202,E501
-DEVPYLINT := $(PYENV) $(VENVPATH)/pylint --disable=I0011 --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}"
-DEVPYTEST := $(PYENV) $(VENVPATH)/py.test -v -x
-DEVPIPINSTALL := $(PYENV) $(VENVPATH)/pip install -i http://pypi.douban.com/simple/
+DEVPYENV := $(PYENV) THATTDEBUG=1
+DEVPYTHON := $(DEVPYENV) $(VENVPATH)/python
+DEVPEP8 := $(DEVPYENV) $(VENVPATH)/pep8 --repeat --ignore=E202,E501
+DEVPYLINT := $(DEVPYENV) $(VENVPATH)/pylint --disable=I0011 --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}"
+DEVPYTEST := $(DEVPYENV) $(VENVPATH)/py.test -v -x
+DEVPIPINSTALL := $(DEVPYENV) $(VENVPATH)/pip install -i http://pypi.douban.com/simple/
 VIRTUAL_ENV := $(VIRTUALENV)
 
 .PHONY: dev-mk dev-path dev-venv-path dev-venv dev-venv-relocate dev-requires dev-requires dev-init
@@ -32,3 +32,6 @@ dev-clean: dev-mk clean
 
 dev-init: dev-mk $(ROOTPATH)/.git dev-requires
 	cp $(DEVPATH)/git-hooks/* $(ROOTPATH)/.git/hooks
+
+dev-server:
+	$(DEVPYTHON) $(ROOTPATH)/server/main.py

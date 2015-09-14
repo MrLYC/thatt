@@ -1,7 +1,8 @@
 ROOTPATH := .
 DEVPATH = $(ROOTPATH)/.dev
 DEVMKFILE := $(DEVPATH)/makefile
-SRCPATH := $(ROOTPATH)/thatt
+SRCPATH := $(ROOTPATH)
+SERVERSRCPATH := $(ROOTPATH)/server
 
 # ENV VARS
 PYENV := env PYTHONPATH=$(SRCPATH)
@@ -27,14 +28,14 @@ full-clean: clean
 	@git clean -f
 
 pylint:
-	$(PEP8) $(SRCPATH)
-	$(PYLINT) -E $(SRCPATH)
+	$(PEP8) $(SERVERSRCPATH)
+	$(PYLINT) -E $(SERVERSRCPATH)
 
 pylint-full:
-	$(PYLINT) $(SRCPATH)
+	$(PYLINT) $(SERVERSRCPATH)
 
 test: pylint
-	$(PYTEST) $(SRCPATH)
+	$(PYTEST) $(SERVERSRCPATH)
 
 requires: $(ROOTPATH)/requirements.txt
 	$(PIPINSTALL) -r $(ROOTPATH)/requirements.txt
